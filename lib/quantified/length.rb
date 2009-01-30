@@ -1,22 +1,20 @@
 module Quantified
   class Length < Attribute
-    numeric_methods :metres, :centimetres, :inches, :feet
-    
     system :metric do
       primitive :metre
       
-      one :centimetre, :is => (0.01).metres
-      one :millimetre, :is => (0.1).centimetres
-      one :kilometre, :is => 1000.metres
+      one :centimetre, :is => Length.new(0.01, :metres)
+      one :millimetre, :is => Length.new(0.1, :centimetres)
+      one :kilometre, :is => Length.new(1000, :metres)
     end
     
     system :imperial do
       primitive :inch
-      one :inch, :is => (2.540).centimetres
+      one :inch, :is => Length.new(2.540, :centimetres)
       
-      one :foot, :plural => :feet, :is => 12.inches
-      one :yard, :is => 3.feet
-      one :mile, :is => 5280.feet
+      one :foot, :plural => :feet, :is => Length.new(12, :inches)
+      one :yard, :is => Length.new(3, :feet)
+      one :mile, :is => Length.new(5280, :feet)
     end
   end
 end

@@ -3,6 +3,7 @@ require 'quantified/length'
 
 class LengthTest < Test::Unit::TestCase
   include Quantified
+  Length.numeric_methods :metres, :centimetres, :inches, :feet
   
   def setup
     @length = Length.new(5, :feet)

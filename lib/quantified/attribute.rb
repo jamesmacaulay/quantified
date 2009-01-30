@@ -76,12 +76,12 @@ module Quantified
       if system
         self.systems_to_units[system.to_sym].dup
       else
-        read_inheritable_attr(:primitives) | self.conversions.keys
+        read_inheritable_attribute(:primitives) | self.conversions.keys
       end
     end
     
     def self.primitives
-      read_inheritable_attr(:primitives).dup
+      read_inheritable_attribute(:primitives).dup
     end
     
     def self.non_primitives
@@ -180,7 +180,8 @@ module Quantified
       else
         self.add_numeric_methods
       end
-      add_numeric_method_for(sym, options) if add_numeric_method
+      unit_name = options[:plural] || sym.to_s.pluralize
+      add_numeric_method_for(unit_name, options) if add_numeric_method
     end
     
     def self.add_conversion_method_for(sym, options={})
@@ -194,9 +195,10 @@ module Quantified
       end
     end
     
-    def self.add_numeric_method_for(sym, options={})
+    def self.add_numeric_method_for(unit_name, options={})
+      unit_name = unit_name.to_sym
+      raise ArgumentError, "#{unit_name.inspect} is not a unit in #{self.name}" unless units.include?(unit_name)
       klass = self
-      unit_name = options[:plural] || sym.to_s.pluralize
       Numeric.class_eval do
         define_method(unit_name) do
           klass.new(self, unit_name.to_sym)

@@ -3,7 +3,7 @@ require 'quantified/mass'
 
 class MassTest < Test::Unit::TestCase
   include Quantified
-  
+  Mass.numeric_methods :grams, :kilograms, :ounces, :pounds
   
   def setup
     @mass = Mass.new(5, :pounds)
